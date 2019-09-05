@@ -3,32 +3,37 @@
 // ================================== connectWiFi() ==================================
 void connectWiFi() {
 #ifndef Kaywinnet
-  #include "D:\River Documents\Arduino\libraries\kaywinnet.h"
+#include "D:\River Documents\Arduino\libraries\kaywinnet.h"
 #endif
 
   WiFi.enableInsecureWEP();
   WiFi.begin(my_ssid, my_password);
+#ifndef ESP01
   Serial.print("Connecting to ");
   Serial.print(wifi_ssid);
   Serial.println(" ...");
-
+#endif
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
+#ifndef ESP01
     Serial.print(WiFi.status()); Serial.print(' ');
+#endif
   }
 
+  long rssi = WiFi.RSSI();
+#ifndef ESP01
   Serial.println('\n');
   Serial.println("Connection established!");
   Serial.print("IP address:\t");
   Serial.println(WiFi.localIP());
-
-  long rssi = WiFi.RSSI();
   Serial.print("Signal Strength (RSSI):");
   Serial.println(rssi);
+#endif
 
 #ifdef WiFiDebug
   // Optional information:
   long rssi = WiFi.RSSI();
+#ifndef ESP01
   Serial.print(F("RSSI=       "));
   Serial.println(rssi);
   Serial.print(F("LocalIP=    "));
@@ -41,6 +46,7 @@ void connectWiFi() {
   Serial.println(WiFi.dnsIP());
   Serial.println();
 #endif
+#endif
 
 }
 
@@ -51,36 +57,41 @@ void connectWiFi() {
 void mqttConnect() {
   // Loop until we're Connected
   while (!client.connected()) {
+#ifndef ESP01
     Serial.print(F("Attempting MQTT connection..."));
+#endif
 
     // Attempt to connect
     if (client.connect(connectName)) {
+#ifndef ESP01
       Serial.println(F("connected"));
+#endif
 
       client.setCallback(callback);
 
       //Subscribe or resubscribe to a topic
       client.subscribe(incomingTopic);
+      client.subscribe(cmndTopic);
+      client.subscribe(timeTopic);
+      client.subscribe(temperatureTopic);
+#ifndef ESP01
       Serial.print(F("Subscribing to "));
       Serial.println(incomingTopic);
-
-      client.subscribe(cmndTopic);
       Serial.print(F("Subscribing to "));
       Serial.println(cmndTopic);
-
-      client.subscribe(timeTopic);
       Serial.print(F("Subscribing to "));
       Serial.println(timeTopic);
-
-      client.subscribe(temperatureTopic);
       Serial.print(F("Subscribing to "));
       Serial.println(temperatureTopic);
-
       Serial.println();
+#endif
+
     } else {
+#ifndef ESP01
       Serial.print(F("failed, rc="));
       Serial.print(String(client.state()));
       Serial.println(F(" try again in 5 seconds"));
+#endif
       delay(5000);
     }
   }

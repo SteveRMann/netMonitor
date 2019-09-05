@@ -1,4 +1,5 @@
 void beginSerial() {
+#ifndef ESP01
   Serial.begin(115200);
   delay(10);
   Serial.println();
@@ -6,4 +7,5 @@ void beginSerial() {
   Serial.println(F(SketchName));
   Serial.println(F(sketchVersion));
   Serial.println();
+#endif
 }
