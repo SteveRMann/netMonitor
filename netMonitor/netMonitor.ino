@@ -1,5 +1,5 @@
-#define SketchName "netMonitor.ino"
-#define sketchVersion "Version 3.0 9/4/2019"
+#define SKETCH_NAME "netMonitor.ino"
+#define SKETCH_VERSION "Version 3.0 9/4/2019"
 
 /*
    This pings essential IP addresses, and if no response is received, it lights a red LED.
@@ -9,7 +9,7 @@
 
    Version 3.0 9/4/2019
      Working with three-color LEDs
-     
+
 */
 
 #include <ESP8266WiFi.h>
@@ -19,6 +19,7 @@
 
 #define DEBUG true  //set to true for debug output, false for no debug ouput
 #define Serial if(DEBUG)Serial
+#define DBUG                    // If defined, show more debug statements
 
 //#define ESP01                   // Just select one
 #define NODEMCU
@@ -41,20 +42,21 @@ const char* ipx[] = {
   "192.168.1.1",       // Router
   "192.168.1.124",     // MQTT Broker
   "192.168.1.128",     // Rosie (I.E. Home Assistant)
+  // Web IPs, ping one at random per loop
   "172.217.11.14",     // Google.com
   "176.32.103.205",    // amazon.com
   "172.217.6.206",     // youtube.com
-  "98.137.246.7"       // yahoo.com
+  "98.137.246.7",      // yahoo.com
+  "173.223.17.209",    // sears.com
+  "83.100.177.234",    // element14.com
+  "140.82.113.3",      // github.com
+  "31.13.71.36"        // facebook.com
 };
 
-//"192.168.1.111",     // Plex server
-//"amazon.com",        // We will pick one of these external IPs at random for the 4th IP
-//"youtube.com",       // This changes the external IP with each scan to minimize ping activity.
-//"yahoo.com"
 
 const int ipCount = 4;
-const int webIpCount = 4;
-const int pingDelay = 1000;       //Ping all IP's then wait (in ms) before pinging again.
+const int webIpCount = 8;
+const int pingDelay = 10000;       //Ping all IP's then wait (in ms) before pinging again.
 
 
 
@@ -177,19 +179,16 @@ void loop() {
     if (i == ipCount - 1) i = i + random(0, webIpCount);  // Last IP. Select an external IP at random.
     strcpy(pingIP, ipx[i]);
 
-    Serial.print(F("DBG I="));
-    Serial.println(i);
-    Serial.print(F("DBG hostNum="));
-    Serial.println(hostNum);
-    Serial.print(F("DBG pingIP="));
-    Serial.println(pingIP);
-
-
 #ifndef ESP01
-    Serial.print("Pinging host ");
+    Serial.println();
+    Serial.print(F("IP "));
     Serial.print(i);
-    Serial.print(", ");
-    //    Serial.print(ipx[i]);
+    Serial.print(F(",  Host "));
+    Serial.println(hostNum);
+    //Serial.print(F("pingIP= "));
+    //Serial.println(pingIP);
+
+    Serial.print("Pinging ");
     Serial.print(pingIP);
 #endif
 
@@ -203,11 +202,11 @@ void loop() {
       wSend(myBits);
 
 #ifndef ESP01
-      Serial.println();
-      Serial.println(F("Success!!"));
-      Serial.print(F("LED bits: "));
-      printBinaryByte(myBits);
-      Serial.println();
+      //Serial.println();
+      //Serial.println(F("Success!!"));
+      //Serial.print(F("LED bits: "));
+      //printBinaryByte(myBits);
+      //Serial.println();
 #endif
 
     } else {
@@ -226,9 +225,8 @@ void loop() {
 
     }
   }  //end For
-
-  Serial.println(F("Before Delay"));
+  Serial.println();
+  Serial.println(F("----------------------"));
   delay(pingDelay);                           // Don't want to flood the net with pings.
-  Serial.println(F("After Delay"));
 
 }
