@@ -1,5 +1,5 @@
 #define SKETCH_NAME "netMonitor.ino"
-#define SKETCH_VERSION "Version 3.0 9/4/2019"
+#define SKETCH_VERSION "Version 3.1 10/3/2019"
 
 /*
    This pings essential IP addresses, and if no response is received, it lights a red LED.
@@ -9,6 +9,10 @@
 
    Version 3.0 9/4/2019
      Working with three-color LEDs
+   Version 3.1 10/3/2019
+     Removed local router from the ping list, added plex server.
+     (If the router is offline, no other pings would work anyway).
+     Added Eagle folder to the git
 
 */
 
@@ -39,7 +43,7 @@ int hostNum  = 0;
 
 // IP's to check.
 const char* ipx[] = {
-  "192.168.1.1",       // Router
+  "192.168.1.111",     // Plex Server
   "192.168.1.124",     // MQTT Broker
   "192.168.1.128",     // Rosie (I.E. Home Assistant)
   // Web IPs, ping one at random per loop
@@ -50,13 +54,14 @@ const char* ipx[] = {
   "173.223.17.209",    // sears.com
   "83.100.177.234",    // element14.com
   "140.82.113.3",      // github.com
-  "31.13.71.36"        // facebook.com
+  "31.13.71.36",       // facebook.com
+  "104.25.24.31"       // home-assistant.io
 };
 
 
 const int ipCount = 4;
-const int webIpCount = 8;
-const int pingDelay = 10000;       //Ping all IP's then wait (in ms) before pinging again.
+const int webIpCount = 9;
+int pingDelay = 10000;       //Ping all IP's then wait (in ms) before pinging again.
 
 
 
@@ -101,7 +106,6 @@ void wSend (byte wData) {
 
 
 
-#ifndef ESP01
 // **************************** Function to print an 8-bit binary number. ****************************
 // Usage: printBinaryByte(0x97);
 // Prints: "10010111"
@@ -111,7 +115,6 @@ void printBinaryByte(byte value) {
     Serial.print((mask & value) ? '1' : '0');
   }
 }
-#endif
 
 
 
@@ -179,7 +182,6 @@ void loop() {
     if (i == ipCount - 1) i = i + random(0, webIpCount);  // Last IP. Select an external IP at random.
     strcpy(pingIP, ipx[i]);
 
-#ifndef ESP01
     Serial.println();
     Serial.print(F("IP "));
     Serial.print(i);
@@ -190,7 +192,6 @@ void loop() {
 
     Serial.print("Pinging ");
     Serial.print(pingIP);
-#endif
 
     greenTicker.attach(0.1, greenTick);         // Start greenTick() while we ping
 
@@ -201,32 +202,32 @@ void loop() {
       bitWrite(myBits, hostNum + 4, 0);         // Turn off the red LED
       wSend(myBits);
 
-#ifndef ESP01
+
       //Serial.println();
       //Serial.println(F("Success!!"));
       //Serial.print(F("LED bits: "));
       //printBinaryByte(myBits);
       //Serial.println();
-#endif
+
 
     } else {
+      // FAIL
       greenTicker.detach();                     // Stop greenTick()
       bitWrite(myBits, hostNum, 0);             // Turn off the green LED
       bitWrite(myBits, hostNum + 4, 1);         // Turn on the red LED
       wSend(myBits);
+      pingDelay = 10;                           //Retry immediately
 
-#ifndef ESP01
       Serial.println();
       Serial.println(F("Error"));
       Serial.print(F("LED bits: "));
       printBinaryByte(myBits);
       Serial.println();
-#endif
-
     }
   }  //end For
+
   Serial.println();
   Serial.println(F("----------------------"));
   delay(pingDelay);                           // Don't want to flood the net with pings.
-
+  pingDelay = 10000;                          // Set delay back to default.
 }
