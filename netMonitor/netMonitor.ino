@@ -6,7 +6,7 @@
    This pings essential IP addresses, and if no response is received, it lights a red LED.
    If all pings are good, it lights a green LED
 
-   built on a NodeMCU (ESP8266)
+   PCB built on a Wemos D1 Mini (ESP8266)
 
    Version 3.0 9/4/2019
      Working with three-color LEDs
@@ -30,16 +30,7 @@
 #define Serial if(DEBUG)Serial
 #define DBUG                    // If defined, show more debug statements
 
-//#define ESP01                   // Just select one
-#define NODEMCU
-
-#ifdef NODEMCU
-#define ledPin 14               // Pin D5 on NodeMcu
-#endif
-#ifdef ESP01
-#define ledPin 1                // GPIO1 is the Tx pin on the ESP-01
-#endif
-
+#define ledPin 14               // Pin D5 on NodeMcu or Wemos D1 Mini (Blue LED)
 
 
 int myBits = 0;
@@ -54,9 +45,9 @@ char hostName[24];        // Holds hostNamePrefix + the last three bytes of the 
 
 // IP's to check.
 const char* ipx[] = {
-  "192.168.1.111",      // Plex Server
+  "192.168.1.64",       // Plex Server
   "192.168.1.124",      // MQTT Broker
-  "192.168.1.60",       // Rosie (I.E. Home Assistant)
+  "192.168.1.54",       // Home Assistant on NUC
   // Web IPs, ping one at random per loop
   "172.217.11.14",      // Google.com
   "176.32.103.205",     // amazon.com
@@ -87,7 +78,7 @@ Ticker greenTicker;               //Ticker object for the Ping Activity LED
 // ****************************  Function to blink LED on pin D5 ****************************
 void blueTick() {
   //toggle state
-  int state = digitalRead(ledPin);            // get the current state of GPI14 pin
+  int state = digitalRead(ledPin);            // get the current state of GPIO14 pin
   digitalWrite(ledPin, !state);               // set pin to the opposite state
 }
 
