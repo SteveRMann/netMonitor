@@ -61,7 +61,7 @@ const char* ipx[] = {
   "204.141.42.155"      // Zoho.com
 };
 
-const int webIpCount = (sizeof(ipx) / sizeof(ipx[0]))-3;
+const int webIpCount = (sizeof(ipx) / sizeof(ipx[0])) - 3;
 //const int ipCount = 4;
 //const int webIpCount = 9;
 int pingDelay = 10000;       //Ping all IP's then wait (in ms) before pinging again.
@@ -158,9 +158,7 @@ void setup() {
   wSend(myBits);
 
 
-  // Connect to a WiFi network
   blueTicker.attach(0.1, blueTick);         // start blueTick() with a fast blink while we connect
-  //connectWiFi();
   setup_wifi();
   blueTicker.detach();                      // Stop blueTick()
   digitalWrite(ledPin, 0);                  // Make sure the blue LED is off.
@@ -171,8 +169,8 @@ void setup() {
   wSend(myBits);
 
 
-Serial.print(F("webIpCount= "));
-Serial.println(webIpCount);
+  Serial.print(F("webIpCount= "));
+  Serial.println(webIpCount);
 }
 
 
@@ -210,14 +208,6 @@ void loop() {
       bitWrite(myBits, hostNum, 1);             // Turn on the green LED
       bitWrite(myBits, hostNum + 4, 0);         // Turn off the red LED
       wSend(myBits);
-
-
-      //Serial.println();
-      //Serial.println(F("Success!!"));
-      //Serial.print(F("LED bits: "));
-      //printBinaryByte(myBits);
-      //Serial.println();
-
 
     } else {
       // FAIL
