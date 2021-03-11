@@ -6,17 +6,19 @@ void connectWiFi() {
 #include "D:\River Documents\Arduino\libraries\kaywinnet.h"
 #endif
 
+/*
   char cTemp[60];                             // Memory of local variables is freed when the function exits (unless declared "static")
-  strcpy(cTemp, my_ssid);                     // Fixed the "not used" compile warnings.
-  strcpy(cTemp, my_password);
+  strcpy(cTemp, MY_SSID);                     // Fixed the "not used" compile warnings.
+  strcpy(cTemp, MY_PASSWORD);
   strcpy(cTemp, my_broker);
-  strcpy(cTemp, mqtt_server);
+  strcpy(cTemp, MQTT_SERVER);
+*/
 
   WiFi.enableInsecureWEP();
-  WiFi.begin(my_ssid, my_password);
+  WiFi.begin(MY_SSID, MY_PASSWORD);
 #ifndef ESP01
   Serial.print("Connecting to ");
-  Serial.print(my_ssid);
+  Serial.print(MY_SSID);
   Serial.println(" ...");
 #endif
   while (WiFi.status() != WL_CONNECTED) {

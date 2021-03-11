@@ -1,5 +1,5 @@
 #define SKETCH_NAME "netMonitor.ino"
-#define SKETCH_VERSION "Version 3.1 10/3/2019"
+#define SKETCH_VERSION "Version 5.1 3/10/2021"
 #define hostPrefix "NetMonitor-"
 
 /*
@@ -18,6 +18,8 @@
      Added OTA.
    Version 5.0 8/25/2020
      Added mqtt to publish ping errors to be logged.
+   Version 5.1 3/10/2021
+     Publish the failing IP.
 
 */
 
@@ -27,8 +29,8 @@
 #include <ESP8266Ping.h>
 #include <Wire.h>               // Wire.h is the library for communicating with I2C devices
 #include <ArduinoOTA.h>
-#include "D:\River Documents\Arduino\libraries\Kaywinnet.h"  \\ WiFi credentials
-
+//#include "D:\River Documents\Arduino\libraries\Kaywinnet.h"  \\ WiFi credentials
+#include <Kaywinnet.h>          // WiFi credentials
 
 #define DEBUG true  //set to true for debug output, false for no debug ouput
 #define Serial if(DEBUG)Serial
@@ -45,15 +47,15 @@ int hostNum  = 0;
 #include <PubSubClient.h>       // connect to a MQTT broker and publish/subscribe messages in topics.
 // Declare an object of class WiFiClient, which allows to establish a connection to a specific IP and port
 // Declare an object of class PubSubClient, which receives as input of the constructor the previously defined WiFiClient.
-// The constructor MUST be unique on the network.
-WiFiClient netmClient;
-PubSubClient client(netmClient);
+// The constructor MUST be unique on the network. I use the last two bytes of the MAC
+WiFiClient netmClientEF;
+PubSubClient client(netmClientEF);
 
 #define NODENAME "netMonitor"                             // Give this node a name
 const char *cmndTopic = NODENAME "/cmnd";                 // Incoming commands, payload is a command.
-const char *statusTopic = NODENAME "/stat";
-const char *connectName =  NODENAME "3";                  // Must be unique on the network
-const char *mqttServer = mqtt_server;                     // Local broker defined in Kaywinnet.h
+const char *statusTopic = NODENAME "/status";
+const char *connectName =  NODENAME "EF";                  // Must be unique on the network
+const char *mqttServer = MQTT_SERVER;                     // Local broker defined in Kaywinnet.h
 const int mqttPort = 1883;
 
 

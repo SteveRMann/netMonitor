@@ -52,7 +52,7 @@ void loop() {
       Serial.print(F("LED bits: "));
       printBinaryByte(myBits);
       Serial.println();
-      client.publish(statusTopic, pingIP);
+      if (i == 3) client.publish(statusTopic, pingIP);
     }
   }  //end For
 
