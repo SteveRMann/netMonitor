@@ -1,5 +1,5 @@
 #define SKETCH_NAME "netMonitor.ino"
-#define SKETCH_VERSION "Version 5.1 3/10/2021"
+#define SKETCH_VERSION "Version 5.2 3/12/2021"
 #define hostPrefix "NetMonitor-"
 
 /*
@@ -20,6 +20,8 @@
      Added mqtt to publish ping errors to be logged.
    Version 5.1 3/10/2021
      Publish the failing IP.
+   Version 5.2 3/12/2021
+     Added four new and removed two problematic external IPs
 
 */
 
