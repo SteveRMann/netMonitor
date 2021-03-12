@@ -53,7 +53,7 @@ PubSubClient client(netmClientEF);
 
 #define NODENAME "netMonitor"                             // Give this node a name
 const char *cmndTopic = NODENAME "/cmnd";                 // Incoming commands, payload is a command.
-const char *statusTopic = NODENAME "/status";
+const char *statusTopic = NODENAME "/stat";
 const char *connectName =  NODENAME "EF";                  // Must be unique on the network
 const char *mqttServer = MQTT_SERVER;                     // Local broker defined in Kaywinnet.h
 const int mqttPort = 1883;
