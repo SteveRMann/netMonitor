@@ -2,15 +2,16 @@
 void loop() {
   ArduinoOTA.handle();
 
-  //Make sure we stay connected to the mqtt broker
-  if (!client.connected()) {
-    mqttConnect();
+  mqttValidate();
+
+  if (aTimer.ding()) {                          // If the timer has expired..
+    ipscan();
   }
-  if (!client.loop()) {
-    client.connect(connectName);
-  }
+}
 
 
+
+void ipscan() {
   char pingIP[20];                            // IP that we're going to ping.
 
   //For each IP in the list
@@ -31,7 +32,10 @@ void loop() {
 
     greenTicker.attach(0.1, greenTick);         // Start greenTick() while we ping
 
-    yield();                                     // Reset the WDT on the ESP8266
+    yield();                                    // Reset the WDT on the ESP8266
+
+    mqttValidate();                             // Make sure we stay connected to the mqtt broker
+
     if (Ping.ping(pingIP)) {                    // Ping
       greenTicker.detach();                     // Stop greenTick()
       bitWrite(myBits, hostNum, 1);             // Turn on the green LED
@@ -52,12 +56,12 @@ void loop() {
       Serial.print(F("LED bits: "));
       printBinaryByte(myBits);
       Serial.println();
-      if (i == 3) client.publish(statusTopic, pingIP);
+      // if (i == 3) client.publish(statusTopic, pingIP);
+      client.publish(statusTopic, pingIP);
     }
-  }  //end For
-
+  }
   Serial.println();
   Serial.println(F("----------------------"));
-  delay(pingDelay);                           // Don't want to flood the net with pings.
-  pingDelay = 10000;                          // Set delay back to default.
+  aTimer.start();                 // Restart the timer.
+
 }

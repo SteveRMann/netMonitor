@@ -1,5 +1,5 @@
 #define SKETCH_NAME "netMonitor.ino"
-#define SKETCH_VERSION "Version 5.2 3/12/2021"
+#define SKETCH_VERSION "Version 5.3 3/16/2021"
 #define hostPrefix "NetMonitor-"
 
 /*
@@ -22,6 +22,8 @@
      Publish the failing IP.
    Version 5.2 3/12/2021
      Added four new and removed two problematic external IPs
+   Version 5.3 3/16/2021
+     Check for MQTT connection with each ping. Log all fails.
 
 */
 
@@ -33,6 +35,10 @@
 #include <ArduinoOTA.h>
 //#include "D:\River Documents\Arduino\libraries\Kaywinnet.h"  \\ WiFi credentials
 #include <Kaywinnet.h>          // WiFi credentials
+
+#include <dlay.h>
+dlay  aTimer;                   // Allocate a global timer.
+
 
 #define DEBUG true  //set to true for debug output, false for no debug ouput
 #define Serial if(DEBUG)Serial
@@ -81,7 +87,7 @@ char hostName[24];        // Holds hostNamePrefix + the last three bytes of the 
 const int webIpCount = (sizeof(ipx) / sizeof(ipx[0])) - 3;
 //const int ipCount = 4;
 //const int webIpCount = 9;
-int pingDelay = 10000;       //Ping all IP's then wait (in ms) before pinging again.
+unsigned int pingDelay = 10000;       //Ping all IP's then wait (in ms) before pinging again.
 
 
 

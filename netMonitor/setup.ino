@@ -56,4 +56,8 @@ void setup() {
 
   Serial.print(F("statusTopic= "));
   Serial.println(statusTopic);
+
+  aTimer.setTime(10000);                   // Time between IP scans
+  aTimer.start();
+  ipscan();                                //First scan- no delays
 }

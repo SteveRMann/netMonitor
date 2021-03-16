@@ -44,13 +44,24 @@
   //----------
   //Where you need to publish:
   client.publish(Topic, "on");
-
 */
 
+// ==================================  mqttValidate ==================================
 
+void mqttValidate() {
+  //Make sure we stay connected to the mqtt broker
+  if (!client.connected()) {
+    mqttConnect();
+  }
+  if (!client.loop()) {
+    client.connect(connectName);
+  }
+}
+
+// ==================================  mqttConnect ==================================
 void mqttConnect() {
   while (!client.connected()) {
-    Serial.print(F("MQTT connection..."));
+    Serial.print(F("MQTT connecting..."));
     if (client.connect(connectName)) {
       Serial.println(F("connected"));
 
