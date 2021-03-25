@@ -1,12 +1,15 @@
 //**************************** SETUP ****************************
 void setup() {
+  beginSerial();
+  setup_wifi();                   // MUST be before setupMqtt()
+  start_OTA();
+  setup_mqtt();                   // Generate the topics
 
-  // Call the setServer method on the PubSubClient object, passing as first argument the
-  // address and as second the port.
+  // Call the setServer method on the PubSubClient object
   client.setServer(mqttServer, mqttPort);
   mqttConnect();
 
-  beginSerial();
+
 
   pinMode(ledPin, OUTPUT);                  // set the blue LED pin on GPIO14 (D5) as output
 
@@ -41,11 +44,11 @@ void setup() {
 
 
   blueTicker.attach(0.1, blueTick);         // start blueTick() with a fast blink while we connect
-  setup_wifi();
+  //setup_wifi();
   blueTicker.detach();                      // Stop blueTick()
   digitalWrite(ledPin, 0);                  // Make sure the blue LED is off.
 
-  start_OTA();
+  //start_OTA();
 
   myBits = B11110000;                       // Reset with all red LEDs on
   wSend(myBits);
@@ -54,8 +57,7 @@ void setup() {
   Serial.print(F("webIpCount= "));
   Serial.println(webIpCount);
 
-  Serial.print(F("statusTopic= "));
-  Serial.println(statusTopic);
+
 
   aTimer.setTime(10000);                   // Time between IP scans
   aTimer.start();

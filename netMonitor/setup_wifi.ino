@@ -4,27 +4,26 @@
 
 /*
   Make sure you include at the start of the sketch:
-  #define hostPrefix "CGM-"
-  #include "ESP8266WiFi.h"   // Not needed if also using the Arduino OTA Library...
-  #include "D:\River Documents\Arduino\libraries\Kaywinnet.h"  \\ WiFi credentials
+  #define SKETCH_NAME "netMonitor"
 
-  If using the OTA Library, put these at the start of the sketch.
-  // setup_wifi vars
-  char macBuffer[24];       // Holds the last three digits of the MAC, in hex.
-  char hostNamePrefix[] = hostPrefix;
-  char hostName[24];        // Holds hostNamePrefix + the last three bytes of the MAC address.
+  #include "ESP8266WiFi.h"        // Not needed if also using the Arduino OTA Library...
+  #include <Kaywinnet.h>          // WiFi credentials
+
+  char macBuffer[24];             // Holds the last three digits of the MAC, in hex.
+  char hostName[24];              // Holds nodeName + the last three bytes of the MAC address.
+
 */
 
 void setup_wifi() {
 #ifndef Kaywinnet
-#include "D:\River Documents\Arduino\libraries\kaywinnet.h"
+#include <Kaywinnet.h>
 #endif
-  byte mac[6];                     //// the MAC address of your Wifi shield
+  byte mac[6];                    // The MAC address of your Wifi
 
   Serial.println(F("\n"));
   Serial.print(F("Connecting to "));
   Serial.println(MY_SSID);
-
+  dbugs("Connecting to ", MY_SSID);
 
   WiFi.mode(WIFI_STA);
   WiFi.enableInsecureWEP();
@@ -45,12 +44,30 @@ void setup_wifi() {
   WiFi.macAddress(mac);
   snprintf(macBuffer, sizeof(macBuffer), "%02X%02X%02X", mac[3], mac[4], mac[5]);
 
-  // Build hostNamePrefix + last three bytes of the MAC address.
-  strcpy(hostName, hostNamePrefix);
+  // Build hostName from prefix + last three bytes of the MAC address.
+  strcpy(hostName, nodeName);
+  strcat(hostName, "-");
   strcat(hostName, macBuffer);
+  WiFi.hostname(hostName);
+  dbugs("hostName= ", hostName);
 
-  Serial.print(F("hostName = \""));
-  Serial.print(hostName);
-  Serial.println(F("\""));
+
+  /* Some experiments
+    int value = atoi(mac5);
+    Serial.print("------mac5= ");
+    Serial.print(value);
+    Serial.println("----------");
+
+    int numbr = stringChecksum(macBuffer);
+    Serial.print("------Checksum= ");
+    Serial.print(numbr);
+    Serial.println("----------");
+
+    char mac5h[3];
+    sprintf(mac5h, "%x", value);
+    Serial.print("------mac5h= ");
+    Serial.print(mac5h);
+    Serial.println("----------");
+  */
 
 }

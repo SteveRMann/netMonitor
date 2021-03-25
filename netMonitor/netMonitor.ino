@@ -1,9 +1,8 @@
-#define SKETCH_NAME "netMonitor.ino"
-#define SKETCH_VERSION "Version 5.3 3/16/2021"
-#define hostPrefix "NetMonitor-"
+#define SKETCH_NAME "netMonitor"
+#define SKETCH_VERSION "Version 6.0 3/24/2021"
 
 /*
-   This pings essential IP addresses, and if no response is received, it lights a red LED.
+   This program pings essential IP addresses, and if no response is received, it lights a red LED.
    If all pings are good, it lights a green LED
 
    PCB built on a Wemos D1 Mini (ESP8266)
@@ -24,6 +23,9 @@
      Added four new and removed two problematic external IPs
    Version 5.3 3/16/2021
      Check for MQTT connection with each ping. Log all fails.
+   Version 6.0 3/24/21
+     Made the hostName dynamic, prefix+last 3 bytes of the MAC
+     Use hostName for MQTT connect.
 
 */
 
@@ -33,14 +35,13 @@
 #include <ESP8266Ping.h>
 #include <Wire.h>               // Wire.h is the library for communicating with I2C devices
 #include <ArduinoOTA.h>
-//#include "D:\River Documents\Arduino\libraries\Kaywinnet.h"  \\ WiFi credentials
 #include <Kaywinnet.h>          // WiFi credentials
 
 #include <dlay.h>
 dlay  aTimer;                   // Allocate a global timer.
 
 
-#define DEBUG true  //set to true for debug output, false for no debug ouput
+#define DEBUG true              // Set to true for debug output, false for no debug ouput
 #define Serial if(DEBUG)Serial
 #define DBUG                    // If defined, show more debug statements
 
@@ -56,37 +57,30 @@ int hostNum  = 0;
 // Declare an object of class WiFiClient, which allows to establish a connection to a specific IP and port
 // Declare an object of class PubSubClient, which receives as input of the constructor the previously defined WiFiClient.
 // The constructor MUST be unique on the network. I use the last two bytes of the MAC
-WiFiClient netmClientEF;
-PubSubClient client(netmClientEF);
+WiFiClient netmClient7F;
+PubSubClient client(netmClient7F);
 
-#define NODENAME "netMonitor"                             // Give this node a name
-const char *cmndTopic = NODENAME "/cmnd";                 // Incoming commands, payload is a command.
-const char *statusTopic = NODENAME "/stat";
-const char *connectName =  NODENAME "EF";                  // Must be unique on the network
-const char *mqttServer = MQTT_SERVER;                     // Local broker defined in Kaywinnet.h
+char statusTopic[20];                         // Wasted RAM here.
+char cmndTopic[20];
+
+const char *mqttServer = MQTT_SERVER;         // Local broker defined in Kaywinnet.h
 const int mqttPort = 1883;
 
+char macBuffer[24];             // Holds the last three digits of the MAC, in hex.
+char hostName[24];              // Holds nodeName + the last three bytes of the MAC address.
+char nodeName[] = SKETCH_NAME;  // Give this node a name
 
-
-
-//-------------------------
-// For OTA
-char macBuffer[24];       // Holds the last three digits of the MAC, in hex.
-char hostNamePrefix[] = hostPrefix;
-char hostName[24];        // Holds hostNamePrefix + the last three bytes of the MAC address.
 
 // The Library ESP8266Ping only works with IP's, but....
-// You can use
+// You can use the folloowing to ping by URL.
 // WiFi.hostByName(domainName,resultIP);
 // Reference: https://www.arduino.cc/en/Reference/WiFiNINAhostByName
 
 
 
-// IP's to check.
+// IP's to ping.
 #include "ipList.h"
 const int webIpCount = (sizeof(ipx) / sizeof(ipx[0])) - 3;
-//const int ipCount = 4;
-//const int webIpCount = 9;
 unsigned int pingDelay = 10000;       //Ping all IP's then wait (in ms) before pinging again.
 
 
@@ -117,8 +111,6 @@ void greenTick() {
 }
 
 
-
-
 // **************************** Function to send a byte to the LED array. ****************************
 void wSend (byte wData) {
   //Send the data to the MCP23008
@@ -131,8 +123,6 @@ void wSend (byte wData) {
 
 
 
-
-
 // **************************** Function to print an 8-bit binary number. ****************************
 // Usage: printBinaryByte(0x97);
 // Prints: "10010111"
@@ -141,4 +131,24 @@ void printBinaryByte(byte value) {
   {
     Serial.print((mask & value) ? '1' : '0');
   }
+}
+
+
+// **************************** Function to checksum a string. ****************************
+byte stringChecksum(char *s)
+{
+    byte c = 0;
+    while(*s != '\0')
+        c ^= *s++;
+    return c;
+}
+
+// ********************** Function to display a string for debugging. **********************
+void dbugs(const char *s, const char *v){
+  //Show a string variable. Enter with the string description and the string.
+  //Example dbugs("My String= ",myString);
+  Serial.print(s);
+  Serial.print (F("\""));
+  Serial.print(v);
+  Serial.println(F("\""));
 }
