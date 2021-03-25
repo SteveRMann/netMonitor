@@ -1,60 +1,78 @@
 
 /* ================================== mqttConnect() =================================
   Include at the top of the main ino file:
+
+  //--------------- mqtt declarations ---------------
   #include <ESP8266WiFi.h>        // Connect (and reconnect) an ESP8266 to the a WiFi network.
   #include <PubSubClient.h>       // connect to a MQTT broker and publish/subscribe messages in topics.
-
   // Declare an object of class WiFiClient, which allows to establish a connection to a specific IP and port
   // Declare an object of class PubSubClient, which receives as input of the constructor the previously defined WiFiClient.
-  // The constructor MUST be unique on the network.
-  WiFiClient pirClient;
-  PubSubClient client(pirClient);
+  // The constructor MUST be unique on the network. (Does it?)
+  WiFiClient xyzzy;
+  PubSubClient client(xyzzy);
 
-  #define NODENAME "motionSensor"                             // Give this node a name
-  const char *cmndTopic = NODENAME "/cmnd";                   // Incoming commands, payload is a command.
-  const char *connectName =  NODENAME "1";                    // Must be unique on the network
-  const char *mqttServer = mqtt_server;                       // Local broker defined in Kaywinnet.h
+  // Declare strings for the topics. Topics will be created in setup_mqtt().
+  char statusTopic[20];
+  char cmndTopic[20];                           // Incoming commands, payload is a command.
+  // Other topics as needed
+
+  const char *mqttServer = MQTT_SERVER;         // Local broker defined in Kaywinnet.h
   const int mqttPort = 1883;
 
+  char nodeName[] = SKETCH_NAME;  // Give this node a name
 
-  //----------
-  //IN SETUP()
-  // Call the setServer method on the PubSubClient object, passing as first argument the
-  // address and as second the port.
-  client.setServer(mqttServer, mqttPort);
-  mqttConnect();
+  const char *mqttServer = MQTT_SERVER;         // Local broker defined in Kaywinnet.h
+  const int mqttPort = 1883;
+  //-------------------------------------------------
 
-  //Show the topics:
-  Serial.print(F("statusTopic= "));
-  Serial.println(statusTopic);
+
+
+  // --------------- Example setup: ---------------
+  void setup() {
+    beginSerial();
+    setup_wifi();                   // MUST be before setupMqtt()
+    start_OTA();                    // Ifusing OTA
+    setup_mqtt();                   // Generate the topics
+
+    // Call the setServer method on the PubSubClient object
+    client.setServer(mqttServer, mqttPort);
+    mqttConnect();
+  //-------------------------------------------------
 
 
 
   //----------
   //IN LOOP()
-  //Make sure we stay connected to the mqtt broker
-  if (!client.connected()) {
-    mqttConnect();
-  }
-  if (!client.loop()) {
-    client.connect(connectName);
-  }
+  mqttValidate();         //Make sure we stay connected to the mqtt broker
 
-
-  //----------
-  //Where you need to publish:
-  client.publish(Topic, "on");
 */
 
-// ==================================  mqttValidate ==================================
 
+
+// ==================================  setup_mqtt ==================================
+// Create topic names
+void setup_mqtt() {
+  //MUST follow setupWiFi()
+  strcpy(cmndTopic, nodeName);
+  strcat(cmndTopic, "/cmnd");             // Incoming commands, payload is a command.
+  strcpy(statusTopic, nodeName);
+  strcat(statusTopic, "/stat");
+
+  //Topics
+  dbugs("cmndTopic= ", cmndTopic);
+  dbugs("statusTopic= ", statusTopic);
+  
+}
+
+
+// ==================================  mqttValidate ==================================
 void mqttValidate() {
   //Make sure we stay connected to the mqtt broker
   if (!client.connected()) {
     mqttConnect();
   }
   if (!client.loop()) {
-    client.connect(connectName);
+    client.connect(hostName);
   }
 }
 
@@ -62,7 +80,7 @@ void mqttValidate() {
 void mqttConnect() {
   while (!client.connected()) {
     Serial.print(F("MQTT connecting..."));
-    if (client.connect(connectName)) {
+    if (client.connect(hostName)) {
       Serial.println(F("connected"));
 
       //Subscriptions:

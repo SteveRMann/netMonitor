@@ -2,7 +2,7 @@
 void loop() {
   ArduinoOTA.handle();
 
-  mqttValidate();
+  mqttValidate();                   // Make sure we're still connected ot the MQTT broker.
 
   if (aTimer.ding()) {                          // If the timer has expired..
     ipscan();

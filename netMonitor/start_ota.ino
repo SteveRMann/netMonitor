@@ -1,7 +1,8 @@
 void start_OTA() {
   /*
-    Make sure this in at the top of the sketch:
+    Make sure you include at the start of the sketch:
     #include <ArduinoOTA.h>
+    
     Start loop() with:
     ArduinoOTA.handle();
 
@@ -10,7 +11,6 @@ void start_OTA() {
 
   //Hostname defaults to esp8266-[MAC address]
   ArduinoOTA.setHostname(hostName);                 // hostName is generated in 'setup_wifi'.
-  //ArduinoOTA.setHostname("Steve");                 // hostName is generated in 'setup_wifi'.
   ArduinoOTA.onStart([]() {
     String type;
     if (ArduinoOTA.getCommand() == U_FLASH) {
