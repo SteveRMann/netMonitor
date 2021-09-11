@@ -27,7 +27,7 @@ const char* ipx[] = {
   "104.244.42.1",       // twitter.com
   "192.16.31.89",		// verizon.net
   "23.1.99.98",         // Walgreens.com
-  "208.80.154.224"      // wikipedia.org
+  "208.80.154.224,"     // wikipedia.org
   "172.217.6.206",      // youtube.com
   "204.141.42.155"      // Zoho.com
 };

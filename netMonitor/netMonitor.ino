@@ -1,5 +1,5 @@
 #define SKETCH_NAME "netMonitor"
-#define SKETCH_VERSION "Version 6.0 3/24/2021"
+#define SKETCH_VERSION "Version 6.1 9/11/2021"
 
 /*
    This program pings essential IP addresses, and if no response is received, it lights a red LED.
@@ -26,7 +26,8 @@
    Version 6.0 3/24/21
      Made the hostName dynamic, prefix+last 3 bytes of the MAC
      Use hostName for MQTT connect.
-
+   Version 6.1 9/11/2021
+     Fixed a comma error in iplist.h
 */
 
 
