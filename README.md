@@ -24,3 +24,7 @@ and see a "green board", then I know not to take the time to ping up to 10 devic
 
 I chose to make the Net Monitor on the NodeMCU platform because it has WiFi and works from any 5V micro-USB wall wart.
 I could have easily included an LCD display, but I just wanted to have something to determine at a glance if I have a net problem.
+
+== To Do
+Check out a different esp8266pin.h library
+https://github.com/dancol90/ESP8266Ping/blob/master/examples/SimplePing/SimplePing.ino
