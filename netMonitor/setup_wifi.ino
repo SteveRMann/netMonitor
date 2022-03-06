@@ -4,7 +4,7 @@
 
 /*
   Make sure you include at the start of the sketch:
-  #define SKETCH_NAME "netMonitor"
+  #define SKETCH "netMonitor"
 
   #include "ESP8266WiFi.h"        // Not needed if also using the Arduino OTA Library...
   #include <Kaywinnet.h>          // WiFi credentials

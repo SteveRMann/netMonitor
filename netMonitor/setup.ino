@@ -1,7 +1,8 @@
 //**************************** SETUP ****************************
 void setup() {
   beginSerial();
-  setup_wifi();                   // MUST be before setupMqtt()
+  //setup_wifi();                   // MUST be before setupMqtt()
+  setup_wifiMulti();
   start_OTA();
   setup_mqtt();                   // Generate the topics
 
@@ -11,24 +12,45 @@ void setup() {
 
 
 
-  pinMode(ledPin, OUTPUT);                  // set the blue LED pin on GPIO14 (D5) as output
+  pinMode(blueLedPin, OUTPUT);    // set the blue LED pin on GPIO14 (D5) as output
 
   //Set up the MCP23008 I/O expander
-  Wire.begin();                   //Creates a Wire object with the default SDA and SCL pins.
-  Wire.beginTransmission(0x20);   //Begins talking to the slave device.
-  Wire.write(0x00);               //Selects the IODIR register.  The IODIR is the register of all the 8 pins.
-  Wire.write(0x00);               //This sets all I/O pins to outputs.
-  Wire.endTransmission();         //Stops talking to device.
+  Wire.begin();                   // Creates a Wire object with the default SDA and SCL pins.
+  Wire.beginTransmission(0x20);   // Begins talking to the slave device.
+  Wire.write(0x00);               // Selects the IODIR register.  The IODIR is the register of all the 8 pins.
+  Wire.write(0x00);               // This sets all I/O pins to outputs.
+  Wire.endTransmission();         // Stops talking to device.
 
-
+  const int ledOnTime = 500;      // LED On Time during startup
   // Flash all LEDs
   Serial.println(F("Flash all LEDs"));
-  wSend (B00000000);            //Set all pins low
-  delay(400);
-  wSend(B11111111);             // Set all output  pins high
-  delay(400);
-  wSend (0);                    //Walk the LEDS
-  delay(400);
+
+  //Off
+  wSend (B00000000);              // Set all pins low (off)
+  digitalWrite(blueLedPin, 0);    // Turn the blue LEDs OFF
+  delay(ledOnTime);
+
+  //Red
+  wSend(B11110000);               // All Red
+  delay(ledOnTime);
+  wSend(B00000000);               // All off
+
+  //Green
+  wSend(B00001111);               // All Green
+  delay(ledOnTime);
+
+  //Blue
+  wSend(B00000000);               // All off
+  digitalWrite(blueLedPin, 1);    // Turn the blue LEDs ON
+  delay(ledOnTime);
+  digitalWrite(blueLedPin, 0);    // Turn the blue LEDs OFF
+
+  wSend(B11111111);               // All Yellow
+  delay(ledOnTime);
+  wSend (0);                      // All off again
+  delay(ledOnTime);
+
+  // Walk the LEDS
   for (int i = 0; i < 8; i++) {
     bitWrite(myBits, i, 1);
     wSend(myBits);
@@ -46,12 +68,11 @@ void setup() {
   blueTicker.attach(0.1, blueTick);         // start blueTick() with a fast blink while we connect
   //setup_wifi();
   blueTicker.detach();                      // Stop blueTick()
-  digitalWrite(ledPin, 0);                  // Make sure the blue LED is off.
+  digitalWrite(blueLedPin, 0);                  // Make sure the blue LED is off.
 
-  //start_OTA();
-
-  myBits = B11110000;                       // Reset with all red LEDs on
-  wSend(myBits);
+  
+  //myBits = B11110000;                       // Reset with all red LEDs on
+  //wSend(myBits);
 
 
   Serial.print(F("webIpCount= "));

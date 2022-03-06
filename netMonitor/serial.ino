@@ -4,8 +4,8 @@ void beginSerial() {
   delay(10);
   Serial.println();
   Serial.println();
-  Serial.println(F(SKETCH_NAME));
-  Serial.println(F(SKETCH_VERSION));
+  Serial.println(F(SKETCH));
+  Serial.println(F(VERSION));
   Serial.println();
 #endif
 }

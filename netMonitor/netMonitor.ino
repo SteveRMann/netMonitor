@@ -1,5 +1,6 @@
-#define SKETCH_NAME "netMonitor"
-#define SKETCH_VERSION "Version 6.1 9/11/2021"
+#define SKETCH "netMonitor"
+#define VERSION "6.20"           // Four characters
+#define hostPrefix "NETMON"      // Six characters max
 
 /*
    This program pings essential IP addresses, and if no response is received, it lights a red LED.
@@ -28,6 +29,9 @@
      Use hostName for MQTT connect.
    Version 6.1 9/11/2021
      Fixed a comma error in iplist.h
+   Version 6.2 3/06/2022
+     Added Red, Green, Blue, Yellow to the startup sequence
+     Changed WiFi.ino to WiFiMulti.ino
 */
 
 
@@ -38,6 +42,19 @@
 #include <ArduinoOTA.h>
 #include <Kaywinnet.h>          // WiFi credentials
 
+
+//--------------- WiFiMulti declarations ---------------
+#include <ESP8266WiFiMulti.h>
+ESP8266WiFiMulti wifiMulti;
+// WiFi connect timeout per AP. Increase when connecting takes longer.
+const uint32_t connectTimeoutMs = 5000;
+
+// setup_wifi vars
+char macBuffer[24];       // Holds the last three digits of the MAC, in hex.
+char hostNamePrefix[] = hostPrefix;
+char hostName[24];        // Holds hostNamePrefix + the last three bytes of the MAC address.
+
+
 #include <dlay.h>
 dlay  aTimer;                   // Allocate a global timer.
 
@@ -46,14 +63,14 @@ dlay  aTimer;                   // Allocate a global timer.
 #define Serial if(DEBUG)Serial
 #define DBUG                    // If defined, show more debug statements
 
-#define ledPin 14               // Pin D5 on NodeMcu or Wemos D1 Mini (Blue LED)
+#define blueLedPin 14               // Pin D5 on NodeMcu or Wemos D1 Mini (Blue LED)
 
 int myBits = 0;
-int hostNum  = 0;
+int ledNum  = 0;
 
 //-------------------------
 //mqtt
-#include <ESP8266WiFi.h>        // Connect (and reconnect) an ESP8266 to the a WiFi network.
+//#include <ESP8266WiFi.h>        // Connect (and reconnect) an ESP8266 to the a WiFi network.
 #include <PubSubClient.h>       // connect to a MQTT broker and publish/subscribe messages in topics.
 // Declare an object of class WiFiClient, which allows to establish a connection to a specific IP and port
 // Declare an object of class PubSubClient, which receives as input of the constructor the previously defined WiFiClient.
@@ -67,9 +84,7 @@ char cmndTopic[20];
 const char *mqttServer = MQTT_SERVER;         // Local broker defined in Kaywinnet.h
 const int mqttPort = 1883;
 
-char macBuffer[24];             // Holds the last three digits of the MAC, in hex.
-char hostName[24];              // Holds nodeName + the last three bytes of the MAC address.
-char nodeName[] = SKETCH_NAME;  // Give this node a name
+char nodeName[] = SKETCH;  // Give this node a name
 
 
 // The Library ESP8266Ping only works with IP's, but....
@@ -97,8 +112,8 @@ Ticker greenTicker;               //Ticker object for the Ping Activity LED
 // ****************************  Function to blink LED on pin D5 ****************************
 void blueTick() {
   //toggle state
-  int state = digitalRead(ledPin);            // get the current state of GPIO14 pin
-  digitalWrite(ledPin, !state);               // set pin to the opposite state
+  int state = digitalRead(blueLedPin);            // get the current state of GPIO14 pin
+  digitalWrite(blueLedPin, !state);               // set pin to the opposite state
 }
 
 
@@ -106,7 +121,7 @@ void blueTick() {
 // ****************************  Function to blink LED[i] ****************************
 void greenTick() {
   // Toggle the LED
-  bitWrite(myBits, hostNum , !bitRead(myBits, hostNum ));
+  bitWrite(myBits, ledNum , !bitRead(myBits, ledNum ));
   wSend(myBits);
   delay(40);
 }
@@ -138,14 +153,14 @@ void printBinaryByte(byte value) {
 // **************************** Function to checksum a string. ****************************
 byte stringChecksum(char *s)
 {
-    byte c = 0;
-    while(*s != '\0')
-        c ^= *s++;
-    return c;
+  byte c = 0;
+  while (*s != '\0')
+    c ^= *s++;
+  return c;
 }
 
 // ********************** Function to display a string for debugging. **********************
-void dbugs(const char *s, const char *v){
+void dbugs(const char *s, const char *v) {
   //Show a string variable. Enter with the string description and the string.
   //Example dbugs("My String= ",myString);
   Serial.print(s);

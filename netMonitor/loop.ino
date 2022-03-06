@@ -16,7 +16,7 @@ void ipscan() {
 
   //For each IP in the list
   for (int i = 0; i < 4; i++) {               // for four LEDS
-    hostNum = i;
+    ledNum = i;
 
     if (i == 3) i = i + random(0, webIpCount);  // Last LED. Select an external IP at random.
     strcpy(pingIP, ipx[i]);
@@ -24,8 +24,8 @@ void ipscan() {
     Serial.println();
     Serial.print(F("IP "));
     Serial.print(i);
-    Serial.print(F(",  Host "));
-    Serial.println(hostNum);
+    Serial.print(F(",  Led "));
+    Serial.println(ledNum);
 
     Serial.print("Pinging ");
     Serial.print(pingIP);
@@ -38,15 +38,15 @@ void ipscan() {
 
     if (Ping.ping(pingIP)) {                    // Ping
       greenTicker.detach();                     // Stop greenTick()
-      bitWrite(myBits, hostNum, 1);             // Turn on the green LED
-      bitWrite(myBits, hostNum + 4, 0);         // Turn off the red LED
+      bitWrite(myBits, ledNum, 1);             // Turn on the green LED
+      bitWrite(myBits, ledNum + 4, 0);         // Turn off the red LED
       wSend(myBits);
 
     } else {
       // FAIL
       greenTicker.detach();                     // Stop greenTick()
-      bitWrite(myBits, hostNum, 0);             // Turn off the green LED
-      bitWrite(myBits, hostNum + 4, 1);         // Turn on the red LED
+      bitWrite(myBits, ledNum, 0);             // Turn off the green LED
+      bitWrite(myBits, ledNum + 4, 1);         // Turn on the red LED
       wSend(myBits);
       pingDelay = 10;                           //Retry immediately
 

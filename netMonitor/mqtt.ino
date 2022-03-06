@@ -19,7 +19,7 @@
   const char *mqttServer = MQTT_SERVER;         // Local broker defined in Kaywinnet.h
   const int mqttPort = 1883;
 
-  char nodeName[] = SKETCH_NAME;  // Give this node a name
+  char nodeName[] = SKETCH;  // Give this node a name
 
   const char *mqttServer = MQTT_SERVER;         // Local broker defined in Kaywinnet.h
   const int mqttPort = 1883;
