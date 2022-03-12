@@ -1,10 +1,6 @@
 #define SKETCH "netMonitor"
-#define VERSION "6.20"           // Four characters
+#define VERSION "6.24"           // Four characters
 #define hostPrefix "NETMON"      // Six characters max
-
-/***** To Do *****
- *  Make the WiFi list into an .h file
- */
 
 /*
    This program pings essential IP addresses, and if no response is received, it lights a red LED.
@@ -36,6 +32,8 @@
    Version 6.2 3/06/2022
      Added Red, Green, Blue, Yellow to the startup sequence
      Changed WiFi.ino to WiFiMulti.ino
+   Vewrsion 6.2.4 3/12/2022
+     Removed sirius.com from the external list.
 */
 
 
@@ -79,8 +77,8 @@ int ledNum  = 0;
 // Declare an object of class WiFiClient, which allows to establish a connection to a specific IP and port
 // Declare an object of class PubSubClient, which receives as input of the constructor the previously defined WiFiClient.
 // The constructor MUST be unique on the network. I use the last two bytes of the MAC
-WiFiClient netmClient81EF;
-PubSubClient client(netmClient81EF);
+WiFiClient netmClientea7f;
+PubSubClient client(netmClientea7f);
 
 char statusTopic[20];                         // Wasted RAM here.
 char cmndTopic[20];
