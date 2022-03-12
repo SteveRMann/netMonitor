@@ -2,6 +2,10 @@
 #define VERSION "6.20"           // Four characters
 #define hostPrefix "NETMON"      // Six characters max
 
+/***** To Do *****
+ *  Make the WiFi list into an .h file
+ */
+
 /*
    This program pings essential IP addresses, and if no response is received, it lights a red LED.
    If all pings are good, it lights a green LED
@@ -75,8 +79,8 @@ int ledNum  = 0;
 // Declare an object of class WiFiClient, which allows to establish a connection to a specific IP and port
 // Declare an object of class PubSubClient, which receives as input of the constructor the previously defined WiFiClient.
 // The constructor MUST be unique on the network. I use the last two bytes of the MAC
-WiFiClient netmClient7F;
-PubSubClient client(netmClient7F);
+WiFiClient netmClient81EF;
+PubSubClient client(netmClient81EF);
 
 char statusTopic[20];                         // Wasted RAM here.
 char cmndTopic[20];
