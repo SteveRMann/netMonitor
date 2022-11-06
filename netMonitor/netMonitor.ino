@@ -1,5 +1,5 @@
 #define SKETCH "netMonitor"
-#define VERSION "6.24"           // Four characters
+#define VERSION "6.25"           // Four characters
 #define hostPrefix "NETMON"      // Six characters max
 
 /*
@@ -32,8 +32,10 @@
    Version 6.2 3/06/2022
      Added Red, Green, Blue, Yellow to the startup sequence
      Changed WiFi.ino to WiFiMulti.ino
-   Vewrsion 6.2.4 3/12/2022
+   Version 6.2.4 3/12/2022
      Removed sirius.com from the external list.
+   Version 6.2.5 11/5/2022
+     Removed outlook.com from the external list.
 */
 
 
@@ -77,8 +79,8 @@ int ledNum  = 0;
 // Declare an object of class WiFiClient, which allows to establish a connection to a specific IP and port
 // Declare an object of class PubSubClient, which receives as input of the constructor the previously defined WiFiClient.
 // The constructor MUST be unique on the network. I use the last two bytes of the MAC
-WiFiClient netmClientea7f;
-PubSubClient client(netmClientea7f);
+WiFiClient netmClient81ef;
+PubSubClient client(netmClient81ef);
 
 char statusTopic[20];                         // Wasted RAM here.
 char cmndTopic[20];

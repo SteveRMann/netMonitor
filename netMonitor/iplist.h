@@ -3,7 +3,6 @@ const char* ipx[] = {
   "192.168.1.124",      // MQTT Broker
   "192.168.1.57",       // Home Assistant on NUC
   // Web IPs, ping one at random per loop
-  "52.24.145.159",      // acehardware.com
   "173.223.17.209",     // akami.com
   "205.251.242.103",    // amazon.com
   "130.211.34.48",      // cbs.com
@@ -18,7 +17,6 @@ const char* ipx[] = {
   "23.39.32.154",       // nbc.com
   "192.0.66.176",       // newscorp.com
   "104.21.86.26",       // nodered.org
-  "40.97.160.2",	    // Outlook.com
   "45.60.12.113",		// Safeway.com
   "23.192.111.135",     // sears.com
   "140.82.112.3",       // github.com
