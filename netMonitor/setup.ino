@@ -1,8 +1,15 @@
 //**************************** SETUP ****************************
 void setup() {
+  int rc;
   beginSerial();
+
   //setup_wifi();                   // MUST be before setupMqtt()
-  setup_wifiMulti();
+  rc = setup_wifiMulti();           // Returns non-zero if setup_wifimulti fails
+  while (rc > 0) {
+    Serial.println(F("setup_wifimulti failed"));
+    rc = setup_wifiMulti();
+  };
+
   start_OTA();
   setup_mqtt();                   // Generate the topics
 
@@ -70,7 +77,7 @@ void setup() {
   blueTicker.detach();                      // Stop blueTick()
   digitalWrite(blueLedPin, 0);                  // Make sure the blue LED is off.
 
-  
+
   //myBits = B11110000;                       // Reset with all red LEDs on
   //wSend(myBits);
 

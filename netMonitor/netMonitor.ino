@@ -79,8 +79,8 @@ int ledNum  = 0;
 // Declare an object of class WiFiClient, which allows to establish a connection to a specific IP and port
 // Declare an object of class PubSubClient, which receives as input of the constructor the previously defined WiFiClient.
 // The constructor MUST be unique on the network. I use the last two bytes of the MAC
-WiFiClient netmClient81ef;
-PubSubClient client(netmClient81ef);
+WiFiClient netmClientea7f;
+PubSubClient client(netmClientea7f);
 
 char statusTopic[20];                         // Wasted RAM here.
 char cmndTopic[20];

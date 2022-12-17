@@ -1,27 +1,27 @@
 /*
- * Add to the top of the sketch:
- * #define SKETCH "netMonitor"
- * #define VERSION "6.20"           // Four characters
- * #define hostPrefix "NETMON"      // Six characters max
- * 
- * //--------------- WiFiMulti declarations ---------------
- * #include <ESP8266WiFiMulti.h>
- * ESP8266WiFiMulti wifiMulti;
- *
- * // WiFi connect timeout per AP. Increase when connecting takes longer.
- * const uint32_t connectTimeoutMs = 5000;
- * 
- * // setup_wifi vars
- * char macBuffer[24];       // Holds the last three digits of the MAC, in hex.
- * char hostNamePrefix[] = hostPrefix;
- * char hostName[24];        // Holds hostNamePrefix + the last three bytes of the MAC address.
- * 
- * 
- * * //esp8266WiFi.h  //Don't use both.
- */
+   Add to the top of the sketch:
+   #define SKETCH "netMonitor"
+   #define VERSION "6.20"           // Four characters
+   #define hostPrefix "NETMON"      // Six characters max
 
- 
-void setup_wifiMulti() {
+   //--------------- WiFiMulti declarations ---------------
+   #include <ESP8266WiFiMulti.h>
+   ESP8266WiFiMulti wifiMulti;
+
+   // WiFi connect timeout per AP. Increase when connecting takes longer.
+   const uint32_t connectTimeoutMs = 5000;
+
+   // setup_wifi vars
+   char macBuffer[24];       // Holds the last three digits of the MAC, in hex.
+   char hostNamePrefix[] = hostPrefix;
+   char hostName[24];        // Holds hostNamePrefix + the last three bytes of the MAC address.
+
+
+ * * //esp8266WiFi.h  //Don't use both.
+*/
+
+
+int setup_wifiMulti() {
   byte mac[6];                      //// the MAC address of your Wifi shield
 
   Serial.println(F("Connecting to WiFi"));
@@ -51,6 +51,7 @@ void setup_wifiMulti() {
     Serial.println(rssi);
   } else {
     Serial.println(F("WiFi not connected!"));
+    return 1;
   }
 
 
@@ -67,4 +68,5 @@ void setup_wifiMulti() {
   //Serial.print(hostName);
   //Serial.println(F("\""));
 
+  return 0;
 }
