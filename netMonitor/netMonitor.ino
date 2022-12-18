@@ -1,5 +1,5 @@
 #define SKETCH "netMonitor"
-#define VERSION "6.25"           // Four characters
+#define VERSION "7.00"           // Four characters
 #define hostPrefix "NETMON"      // Six characters max
 
 /*
@@ -36,6 +36,8 @@
      Removed sirius.com from the external list.
    Version 6.2.5 11/5/2022
      Removed outlook.com from the external list.
+   Version 7.00 12/17/22
+     Removed MQTT
 */
 
 
@@ -73,6 +75,7 @@ int myBits = 0;
 int ledNum  = 0;
 
 //-------------------------
+/*
 //mqtt
 //#include <ESP8266WiFi.h>        // Connect (and reconnect) an ESP8266 to the a WiFi network.
 #include <PubSubClient.h>       // connect to a MQTT broker and publish/subscribe messages in topics.
@@ -89,7 +92,7 @@ const char *mqttServer = MQTT_SERVER;         // Local broker defined in Kaywinn
 const int mqttPort = 1883;
 
 char nodeName[] = SKETCH;  // Give this node a name
-
+*/
 
 // The Library ESP8266Ping only works with IP's, but....
 // You can use the folloowing to ping by URL.

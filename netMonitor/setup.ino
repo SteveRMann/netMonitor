@@ -11,12 +11,12 @@ void setup() {
   };
 
   start_OTA();
+/*
   setup_mqtt();                   // Generate the topics
-
   // Call the setServer method on the PubSubClient object
   client.setServer(mqttServer, mqttPort);
   mqttConnect();
-
+*/
 
 
   pinMode(blueLedPin, OUTPUT);    // set the blue LED pin on GPIO14 (D5) as output

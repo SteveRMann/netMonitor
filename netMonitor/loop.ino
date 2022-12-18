@@ -1,7 +1,7 @@
 //************************************** LOOP *******************************
 void loop() {
   ArduinoOTA.handle();
-  mqttValidate();                   // Make sure we're still connected ot the MQTT broker.
+  //mqttValidate();                   // Make sure we're still connected ot the MQTT broker.
 
   if (aTimer.ding()) {                          // If the timer has expired..
     // Serial.println(F("aTimer ding"));
@@ -36,7 +36,7 @@ void ipscan() {
 
     yield();                                    // Reset the WDT on the ESP8266
 
-    mqttValidate();                             // Make sure we stay connected to the mqtt broker
+   /// mqttValidate();                             // Make sure we stay connected to the mqtt broker
 
     if (Ping.ping(pingIP)) {                    // Ping
       greenTicker.detach();                     // Stop greenTick()
@@ -59,7 +59,7 @@ void ipscan() {
       printBinaryByte(myBits);
       Serial.println();
       // if (i == 3) client.publish(statusTopic, pingIP);
-      client.publish(statusTopic, pingIP);
+      ///client.publish(statusTopic, pingIP);
     }
   }
 //  Serial.println();

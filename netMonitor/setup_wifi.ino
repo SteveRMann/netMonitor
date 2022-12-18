@@ -45,7 +45,7 @@ void setup_wifi() {
   snprintf(macBuffer, sizeof(macBuffer), "%02X%02X%02X", mac[3], mac[4], mac[5]);
 
   // Build hostName from prefix + last three bytes of the MAC address.
-  strcpy(hostName, nodeName);
+  strcpy(hostName, "netmon");
   strcat(hostName, "-");
   strcat(hostName, macBuffer);
   WiFi.hostname(hostName);
