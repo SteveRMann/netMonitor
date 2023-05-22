@@ -1,4 +1,5 @@
 *.psd
 Story.txt
 gitpath.txt
-*.b###
+*.b##
+*.s##

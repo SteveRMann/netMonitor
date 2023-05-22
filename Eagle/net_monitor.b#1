@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.3.2">
+<eagle version="9.6.2">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="50" unitdist="mil" unit="inch" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mil" altunit="mil"/>
+<grid distance="0.01" unitdist="inch" unit="inch" style="lines" multiple="1" display="yes" altdistance="5" altunitdist="mil" altunit="mil"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
@@ -148,16 +148,22 @@
 </layers>
 <board>
 <plain>
-<wire x1="0" y1="0" x2="79.68" y2="0" width="0" layer="20"/>
-<wire x1="79.68" y1="0" x2="79.68" y2="48.25" width="0" layer="20"/>
-<wire x1="79.68" y1="48.25" x2="0" y2="48.25" width="0" layer="20"/>
+<wire x1="0" y1="0" x2="76.962" y2="0" width="0" layer="20"/>
+<wire x1="76.962" y1="0" x2="76.962" y2="21.336" width="0" layer="20"/>
+<wire x1="76.962" y1="21.336" x2="76.962" y2="21.59" width="0" layer="20"/>
+<wire x1="76.962" y1="21.59" x2="75.438" y2="21.59" width="0" layer="20"/>
+<wire x1="75.438" y1="21.59" x2="75.438" y2="30.48" width="0" layer="20"/>
+<wire x1="75.438" y1="30.48" x2="76.962" y2="30.48" width="0" layer="20"/>
+<wire x1="76.962" y1="30.48" x2="76.962" y2="48.25" width="0" layer="20"/>
+<wire x1="76.962" y1="48.25" x2="0" y2="48.25" width="0" layer="20"/>
 <wire x1="0" y1="48.25" x2="0" y2="0" width="0" layer="20"/>
-<text x="57.15" y="10.16" size="1.778" layer="21">Net monitor</text>
+<text x="58.42" y="3.81" size="1.778" layer="21">Net monitor
+10/3/2019</text>
 <hole x="3.81" y="45.72" drill="3.2639"/>
 <hole x="3.81" y="2.54" drill="3.2639"/>
-<hole x="76.2" y="2.54" drill="3.2639"/>
-<hole x="76.2" y="45.72" drill="3.2639"/>
-<text x="31.75" y="45.72" size="0.762" layer="21">80mm x 47mm</text>
+<hole x="72.39" y="2.54" drill="3.2639"/>
+<hole x="71.12" y="45.72" drill="3.2639"/>
+<text x="31.75" y="45.72" size="0.762" layer="21">77mm x 47mm</text>
 </plain>
 <libraries>
 <library name="adafruit">
@@ -993,10 +999,35 @@ design rules under a new name.</description>
 <contactref element="LED4" pad="4"/>
 <contactref element="LED3" pad="4"/>
 <contactref element="LED2" pad="4"/>
-<wire x1="23.749" y1="28.2416" x2="23.749" y2="37.1316" width="0" layer="19" extent="1-1"/>
-<wire x1="23.749" y1="19.3516" x2="23.749" y2="28.2416" width="0" layer="19" extent="1-1"/>
-<wire x1="23.749" y1="10.4616" x2="23.749" y2="19.3516" width="0" layer="19" extent="1-1"/>
-<wire x1="5.08" y1="6.35" x2="23.749" y2="10.4616" width="0" layer="19" extent="1-1"/>
+<wire x1="13.716" y1="6.4008" x2="5.1816" y2="6.4008" width="0.1524" layer="1"/>
+<wire x1="16.6116" y1="9.2964" x2="13.716" y2="6.4008" width="0.1524" layer="1"/>
+<wire x1="22.5552" y1="9.2964" x2="16.6116" y2="9.2964" width="0.1524" layer="1"/>
+<wire x1="23.622" y1="10.3632" x2="22.5552" y2="9.2964" width="0.1524" layer="1"/>
+<wire x1="5.1816" y1="6.4008" x2="5.08" y2="6.35" width="0.1524" layer="1"/>
+<wire x1="23.622" y1="10.3632" x2="23.749" y2="10.4616" width="0.1524" layer="1"/>
+<wire x1="23.7744" y1="13.8684" x2="23.7744" y2="19.2024" width="0.1524" layer="1"/>
+<wire x1="23.9268" y1="13.716" x2="23.7744" y2="13.8684" width="0.1524" layer="1"/>
+<wire x1="23.9268" y1="10.668" x2="23.9268" y2="13.716" width="0.1524" layer="1"/>
+<wire x1="23.7744" y1="10.5156" x2="23.9268" y2="10.668" width="0.1524" layer="1"/>
+<wire x1="23.7744" y1="19.2024" x2="23.749" y2="19.3516" width="0.1524" layer="1"/>
+<wire x1="23.7744" y1="10.5156" x2="23.749" y2="10.4616" width="0.1524" layer="1"/>
+<wire x1="23.7744" y1="27.5844" x2="23.7744" y2="28.194" width="0.1524" layer="16"/>
+<wire x1="28.8036" y1="22.5552" x2="23.7744" y2="27.5844" width="0.1524" layer="16"/>
+<wire x1="30.1752" y1="22.5552" x2="28.8036" y2="22.5552" width="0.1524" layer="16"/>
+<wire x1="30.7848" y1="21.9456" x2="30.1752" y2="22.5552" width="0.1524" layer="16"/>
+<wire x1="30.7848" y1="21.1836" x2="30.7848" y2="21.9456" width="0.1524" layer="16"/>
+<wire x1="30.0228" y1="20.4216" x2="30.7848" y2="21.1836" width="0.1524" layer="16"/>
+<wire x1="24.8412" y1="20.4216" x2="30.0228" y2="20.4216" width="0.1524" layer="16"/>
+<wire x1="23.7744" y1="19.3548" x2="24.8412" y2="20.4216" width="0.1524" layer="16"/>
+<wire x1="23.7744" y1="28.194" x2="23.749" y2="28.2416" width="0.1524" layer="16"/>
+<wire x1="23.7744" y1="19.3548" x2="23.749" y2="19.3516" width="0.1524" layer="16"/>
+<wire x1="23.7744" y1="32.6136" x2="23.7744" y2="37.0332" width="0.1524" layer="16"/>
+<wire x1="28.8036" y1="27.5844" x2="23.7744" y2="32.6136" width="0.1524" layer="16"/>
+<wire x1="30.3276" y1="27.5844" x2="28.8036" y2="27.5844" width="0.1524" layer="16"/>
+<wire x1="30.7848" y1="27.1272" x2="30.3276" y2="27.5844" width="0.1524" layer="16"/>
+<wire x1="30.7848" y1="23.1648" x2="30.7848" y2="27.1272" width="0.1524" layer="16"/>
+<wire x1="30.1752" y1="22.5552" x2="30.7848" y2="23.1648" width="0.1524" layer="16"/>
+<wire x1="23.7744" y1="37.0332" x2="23.749" y2="37.1316" width="0.1524" layer="16"/>
 </signal>
 </signals>
 <mfgpreviewcolors>
@@ -1009,6 +1040,10 @@ design rules under a new name.</description>
 </board>
 </drawing>
 <compatibility>
+<note version="6.3" minversion="6.2.2" severity="warning">
+Since Version 6.2.2 text objects can contain more than one line,
+which will not be processed correctly with this version.
+</note>
 <note version="8.2" severity="warning">
 Since Version 8.2, EAGLE supports online libraries. The ids
 of those online libraries will not be understood (or retained)
