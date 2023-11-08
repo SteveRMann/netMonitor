@@ -1,23 +1,9 @@
 //**************************** SETUP ****************************
 void setup() {
-  int rc;
   beginSerial();
 
-  //setup_wifi();                   // MUST be before setupMqtt()
-  rc = setup_wifiMulti();           // Returns non-zero if setup_wifimulti fails
-  while (rc > 0) {
-    Serial.println(F("setup_wifimulti failed"));
-    rc = setup_wifiMulti();
-  };
-
+  setup_wifi();                   // MUST be before setupMqtt()
   start_OTA();
-/*
-  setup_mqtt();                   // Generate the topics
-  // Call the setServer method on the PubSubClient object
-  client.setServer(mqttServer, mqttPort);
-  mqttConnect();
-*/
-
 
   pinMode(blueLedPin, OUTPUT);    // set the blue LED pin on GPIO14 (D5) as output
 

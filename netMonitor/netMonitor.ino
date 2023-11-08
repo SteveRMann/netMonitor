@@ -1,5 +1,5 @@
 #define SKETCH "netMonitor"
-#define VERSION "7.00"           // Four characters
+#define VERSION "7.10"           // Four characters
 #define hostPrefix "NETMON"      // Six characters max
 
 /*
@@ -38,6 +38,10 @@
      Removed outlook.com from the external list.
    Version 7.00 12/17/22
      Removed MQTT
+   Version 7.1  11/8/2023
+     Added  WiFi.disconnect(true); to Setup_Wifi()
+     Removed WiFiMulti()
+
 */
 
 
