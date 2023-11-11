@@ -1,6 +1,5 @@
 const char* ipx[] = {
   "192.168.1.64",       // Plex Server
-  //"127.0.0.1",          // Self
   "192.168.1.124",      // MQTT Broker
   "192.168.1.57",       // Home Assistant on NUC
   // Web IPs, ping one at random per loop
