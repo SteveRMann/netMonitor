@@ -47,17 +47,11 @@
 
 
 //-------------------------
-#include <ESP8266Ping.h>
+#include <ESP8266Ping.h>        // Includes ESP8266WiFi.h
 #include <Wire.h>               // Wire.h is the library for communicating with I2C devices
 #include <ArduinoOTA.h>
 #include <Kaywinnet.h>          // WiFi credentials
 
-
-//--------------- WiFiMulti declarations ---------------
-#include <ESP8266WiFiMulti.h>
-ESP8266WiFiMulti wifiMulti;
-// WiFi connect timeout per AP. Increase when connecting takes longer.
-const uint32_t connectTimeoutMs = 5000;
 
 // setup_wifi vars
 char macBuffer[24];       // Holds the last three digits of the MAC, in hex.
@@ -79,31 +73,6 @@ int myBits = 0;
 int ledNum  = 0;
 
 //-------------------------
-/*
-//mqtt
-//#include <ESP8266WiFi.h>        // Connect (and reconnect) an ESP8266 to the a WiFi network.
-#include <PubSubClient.h>       // connect to a MQTT broker and publish/subscribe messages in topics.
-// Declare an object of class WiFiClient, which allows to establish a connection to a specific IP and port
-// Declare an object of class PubSubClient, which receives as input of the constructor the previously defined WiFiClient.
-// The constructor MUST be unique on the network. I use the last two bytes of the MAC
-WiFiClient netmClientea7f;
-PubSubClient client(netmClientea7f);
-
-char statusTopic[20];                         // Wasted RAM here.
-char cmndTopic[20];
-
-const char *mqttServer = MQTT_SERVER;         // Local broker defined in Kaywinnet.h
-const int mqttPort = 1883;
-
-char nodeName[] = SKETCH;  // Give this node a name
-*/
-
-// The Library ESP8266Ping only works with IP's, but....
-// You can use the folloowing to ping by URL.
-// WiFi.hostByName(domainName,resultIP);
-// Reference: https://www.arduino.cc/en/Reference/WiFiNINAhostByName
-
-
 
 // IP's to ping.
 #include "ipList.h"
