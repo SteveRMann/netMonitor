@@ -14,7 +14,6 @@
 
   const char WIFISSID[] = NSSID;      //Select the network credentials
   const char WIFIPASS[] = NPASSWORD;
-
 */
 
 void setup_wifi() {
@@ -24,7 +23,8 @@ void setup_wifi() {
   byte mac[6];                    // The MAC address of your Wifi
 
   Serial.println(F("\n"));
-  dbugs("Connecting to ", WIFISSID);
+  Serial.print(F("Connecting to "));
+  Serial.println(WIFISSID);
   Serial.print(F("Password: "));
   Serial.println(WIFIPASS);
 
@@ -60,25 +60,6 @@ void setup_wifi() {
   strcat(hostName, "-");
   strcat(hostName, macBuffer);
   WiFi.hostname(hostName);
-  dbugs("hostName= ", hostName);
-
-
-  /* Some experiments
-    int value = atoi(mac5);
-    Serial.print("------mac5= ");
-    Serial.print(value);
-    Serial.println("----------");
-
-    int numbr = stringChecksum(macBuffer);
-    Serial.print("------Checksum= ");
-    Serial.print(numbr);
-    Serial.println("----------");
-
-    char mac5h[3];
-    sprintf(mac5h, "%x", value);
-    Serial.print("------mac5h= ");
-    Serial.print(mac5h);
-    Serial.println("----------");
-  */
-
+  Serial.print(F("hostName= "));
+  Serial.println(hostName);
 }

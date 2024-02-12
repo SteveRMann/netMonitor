@@ -1,5 +1,5 @@
-#define SKETCH "netMonitor2"
-#define VERSION "2.00"           // Four characters
+#define SKETCH __FILE__
+#define VERSION "2.30"           // Four characters
 #define hostPrefix "NETMON"      // Six characters max
 
 /*
@@ -9,16 +9,17 @@
 
    PCB built on a Wemos D1 Mini (ESP8266)
 
-   Version 2.0 11/25/2023   Removed ticker
+   Version 2.00 11/25/2023   Removed ticker
+   Version 2.30 12/14/2023   Removed OTA, using <ESPping.h>
 
 */
 
 
 
 //-------------------------
-#include <ESP8266Ping.h>        // Includes ESP8266WiFi.h
+//#include <ESP8266Ping.h>        // Includes ESP8266WiFi.h
+#include <ESPping.h>
 #include <Wire.h>               // Wire.h is the library for communicating with I2C devices
-#include <ArduinoOTA.h>
 #include <Kaywinnet.h>          // WiFi credentials
 
 #include "hosts.h"              //List of hostnames and IP addresses to ping
@@ -43,7 +44,6 @@ dlay  aTimer;                   // Allocate a global timer.
 #define Serial if(DEBUG)Serial
 #define DBUG                    // If defined, show more debug statements
 
-//#define blueLedPin 14           // Pin D5 on NodeMcu or Wemos D1 Mini (Blue LED)
 #define blueLedPin D4           // GPIO2, BuiltIn LED.
 #define LEDON 0
 #define LEDOFF 1
@@ -51,30 +51,6 @@ dlay  aTimer;                   // Allocate a global timer.
 int myBits = 0;                 //Contains the LED bit pattern: BRRRRGGGG
 int ledNum  = 0;
 
-//-------------------------
-//for LED status
-//#include <Ticker.h>
-//Ticker blueTicker;                //Ticker object for the WiFi Connecting LED
-//Ticker greenTicker;               //Ticker object for the Ping Activity LED
-
-
-
-// ****************************  Function to blink LED on pin D5 ****************************
-void blueTick() {
-  //toggle state
-  int state = digitalRead(blueLedPin);            // get the current state of GPIO14 pin
-  digitalWrite(blueLedPin, !state);               // set pin to the opposite state
-}
-
-
-
-// ****************************  Function to blink LED[i] ****************************
-//void greenTick() {
-//  // Toggle the LED
-//  bitWrite(myBits, ledNum , !bitRead(myBits, ledNum ));
-//  wSend(myBits);
-//  delay(40);
-//}
 
 
 // **************************** Function to send a byte to the LED array. ****************************
@@ -107,16 +83,6 @@ byte stringChecksum(char *s)
   while (*s != '\0')
     c ^= *s++;
   return c;
-}
-
-// ********************** Function to display a string for debugging. **********************
-void dbugs(const char *s, const char *v) {
-  //Show a string variable. Enter with the string description and the string.
-  //Example dbugs("My String= ",myString);
-  Serial.print(s);
-  Serial.print (F("\""));
-  Serial.print(v);
-  Serial.println(F("\""));
 }
 
 

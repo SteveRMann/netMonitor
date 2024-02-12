@@ -3,7 +3,7 @@ void setup() {
   beginSerial();
 
   setup_wifi();
-  start_OTA();
+
 
   pinMode(blueLedPin, OUTPUT);    // set the blue LED pin on GPIO14 (D5) as output
 
@@ -103,5 +103,4 @@ void setup() {
 
   aTimer.setTime(10000);                   // Time between IP scans
   aTimer.start();
-  Serial.println(F("End of setup()"));
 }

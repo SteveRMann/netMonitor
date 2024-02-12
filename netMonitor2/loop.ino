@@ -1,8 +1,6 @@
 //************************************** LOOP *******************************
 void loop() {
-  ArduinoOTA.handle();
   if (aTimer.ding()) {                          //If the timer has expired..
-    Serial.println(F("aTimer dinged"));
     ipscan();                                   //Ping the three local IP addresses
     aTimer.start();                             //Restart the timer.
   }
@@ -10,7 +8,6 @@ void loop() {
 
 
 void ipscan() {
-  //For each IP in the list. Because the library doesn't know .local hosts
   for (int ipNum = 0; ipNum < ipCount; ipNum++) {
     yellow(ipNum);
     wSend(myBits);
@@ -18,7 +15,7 @@ void ipscan() {
 
     Serial.print(F("Pinging.. "));
     Serial.print(ipAddressArray[ipNum]);
-    if (Ping.ping(ipAddressArray[ipNum])) {
+    if (Ping.ping(ipAddressArray[ipNum],10)) {
       Serial.println(F(" OK"));
       bitWrite(myBits, ipNum, 1);               //Turn on the green LED
       bitWrite(myBits, ipNum + 4, 0);           //Turn off the red LED
